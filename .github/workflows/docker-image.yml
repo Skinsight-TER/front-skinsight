@@ -24,7 +24,7 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Build Docker image
-      run: docker build -t dakeinu/backskinsight:latest -f ./Dockerfile .
+      run: docker build -t dakeinu/frontskinsight:latest -f ./Dockerfile .
 
     - name: Push Docker image to Docker Hub
-      run: docker push dakeinu/backskinsight:latest
+      run: docker push dakeinu/frontskinsight:latest
