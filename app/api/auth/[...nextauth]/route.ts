@@ -1,27 +1,29 @@
-import { Backend_URL } from "@/lib/Constants";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials"
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: '/login',
+  },
   providers: [
     CredentialsProvider({
       name:"Credentials",
       credentials: {
-        username: {
-          label: "Username",
+        email: {
+          label: "Email",
           type: "text",
           placeholder: "Jhon Doe",
         },
-        password: { label: "Password", type: "password" }
+        password: { label: "Mot de passe", type: "password" }
       },
       async authorize(credentials, req){
-        if (!credentials?.username || !credentials?.password) return null;
-        const { username, password } = credentials;
-        const res = await fetch (Backend_URL + "auth/login", {
+        if (!credentials?.email || !credentials?.password) return null;
+        const { email, password } = credentials;
+        const res = await fetch (process.env.NEXT_PUBLIC_BACKEND_URL + "auth/login", {
           method: "POST",
           body: JSON.stringify({
-            username,
+            email,
             password,
           }),
           headers: {
