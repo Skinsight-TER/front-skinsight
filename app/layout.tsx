@@ -13,9 +13,8 @@ export default function RootLayout( props: Props ) {
 
   return (
     <html lang="en">
-      <body>
+      <body className='bg-light-green'>
         <Providers>
-          <AppBar />
           {props.children}
         </Providers>
       </body>
