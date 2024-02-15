@@ -5,19 +5,20 @@ import Providers from '../components/Providers'
 import { useSession } from 'next-auth/react'
 import AppBar from '@/components/AppBar'
 
-interface Props {
-  children: React.ReactNode;
-}
+const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout( props: Props ) {
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <html lang="en">
-      <body className='bg-light-green'>
-        <Providers>
-          {props.children}
-        </Providers>
-      </body>
-    </html>
+    <html lang="en" suppressHydrationWarning>
+        <body className={inter.className}>
+          <Providers>
+            {children}
+          </Providers>
+        </body>
+      </html>
   )
 }

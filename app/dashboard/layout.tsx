@@ -2,7 +2,6 @@
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ReactElement, cloneElement, useEffect } from 'react';
-import Toto from './components/Toto';
 import AppBar from '@/components/AppBar';
 
 const RootLayouts = ({ children }: { children: React.ReactNode }) => {
@@ -11,22 +10,20 @@ const RootLayouts = ({ children }: { children: React.ReactNode }) => {
   console.log(session)
 
 
-  // useEffect(() => {
-  //   if (session.status === 'unauthenticated'){
-  //     router.replace('/login')
-  //   }
+  useEffect(() => {
+    if (session.status === 'unauthenticated'){
+      router.replace('/auth/login')
+    }
 
-  //   if (session.status === 'authenticated') {
-  //     <div>Loading...</div>
-  //   }
-  // }, [session, router]);
-
+    // if (session.status === 'authenticated') {
+    //   <div>Loading...</div>
+    // }
+  }, [session, router]);
 
   return (
-    <div>
+    <div className='flex gap-2'>
       <AppBar />
       {children}
-      <Toto />
     </div>
   )
 }

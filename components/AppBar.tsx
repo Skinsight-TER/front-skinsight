@@ -4,7 +4,7 @@ import SignInButton from './SignInButton'
 
 const AppBar = () => {
   return (
-    <header className='flex gap-4 p-4 bg-dark-green shadow'>
+    <header className='flex flex-col justify-start w-[20%] h-full gap-4 p-4 bg-dark-green shadow'>
       <Link href={"/"} className='transition-colors hover:bg-main-green hover:text-white'>
         Accueil
       </Link>

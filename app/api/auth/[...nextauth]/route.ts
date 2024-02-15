@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: '/login',
+    signIn: '/auth/login',
   },
   providers: [
     CredentialsProvider({
@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials, req){
         if (!credentials?.email || !credentials?.password) return null;
         const { email, password } = credentials;
-        const res = await fetch (process.env.NEXT_PUBLIC_BACKEND_URL + "auth/login", {
+        const res = await fetch (process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
           method: "POST",
           body: JSON.stringify({
             email,
@@ -37,9 +37,17 @@ export const authOptions: NextAuthOptions = {
         }
         const user = await res.json()
         return user;
-      }
+      },
     })
-  ]
+  ], 
+  callbacks: {
+    async session({ token, session }) {
+      if (session.user) {
+        session.user = token.user!;
+      }
+      return session;
+    }
+  }
 }
 
 const handler = NextAuth(authOptions);
