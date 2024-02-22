@@ -11,6 +11,7 @@ const RootLayouts = ({ children }: { children: React.ReactNode }) => {
 
 
   useEffect(() => {
+    if (session.status === "loading") return
     if (session.status === 'unauthenticated'){
       router.replace('/auth/login')
     }

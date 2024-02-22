@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRef } from "react";
 import Image from "next/image";
 import {default as Logo} from "@/public/logo.svg";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
  
 type FormInputs = {
   email: string;
@@ -82,7 +82,7 @@ const SigninPage = () => {
                 placeholder="xyz@mail.com"
                 required
                 onChange={(e) => (data.current.email = e.target.value)}
-                className="rounded-xl text-dark"
+                className="rounded-xl text-main-dark"
                 />
                 
             </div>
@@ -93,12 +93,12 @@ const SigninPage = () => {
                 id="password"
                 required
                 onChange={(e) => (data.current.password = e.target.value)}
-                className="rounded-xl text-dark"
+                className="rounded-xl text-main-dark"
               />
             </div>
             </div>
             <div className="flex">
-              <Button onClick={login} className="w-full rounded-xl bg-cgreen text-2xl">Continue</Button>
+              <Button onClick={login} className="w-full rounded-xl bg-main-green text-2xl">Continue</Button>
             </div>
             <div className="flex justify-center">
               <p>Pas de compte ?</p>

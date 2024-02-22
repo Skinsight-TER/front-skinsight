@@ -1,26 +1,62 @@
+'use client'
+
 import Link from 'next/link'
 import React from 'react'
 import SignInButton from './SignInButton'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion'
+import { useSession } from 'next-auth/react'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 
-const AppBar = () => {
+
+export default function AppBar() {
+  const { data: session } = useSession()
+
+  if (session) {
+    return (
+      <div className='flex flex-col bg-dark-green w-[20%] h-screen gap-5 px-6'>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <Link href={"/home"} className=''>
+          Accueil
+        </Link>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='preconsultation'>
+            <AccordionTrigger>Préconsultation</AccordionTrigger>
+            <AccordionContent>
+              <Link href={"/preconsultation-form"}>Formulaire de préconsultation</Link>
+            </AccordionContent>
+            <AccordionContent>
+              <Link href={"/preconsultation-in-progress"}>Préconsultation en cours</Link>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value='rendez-vous'>
+            <AccordionTrigger>Rendez-vous</AccordionTrigger>
+            <AccordionContent>
+              <Link href={"/rdv-available"}>Formulaire de préconsultation</Link>
+            </AccordionContent>
+            <AccordionContent>
+              <Link href={"/rdv-in-progress"}>Préconsultation en cours</Link>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value='drive'>
+            <AccordionTrigger>Drive</AccordionTrigger>
+            <AccordionContent>
+              <Link href={"/drive-import"}>importez vos images</Link>
+            </AccordionContent>
+            <AccordionContent>
+              <Link href={"/dashboard/drive"}>Vos images</Link>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <div className='mb-10 mt-auto'>
+          <SignInButton />
+        </div>
+      </div>
+    )
+  }
   return (
-    <header className='flex flex-col justify-start w-[20%] h-full gap-4 p-4 bg-dark-green shadow'>
-      <Link href={"/"} className='transition-colors hover:bg-main-green hover:text-white'>
-        Accueil
-      </Link>
-      <Link href={"/preconsultation"} className='transition-colors hover:bg-main-green hover:text-white'>
-        Préconsultation
-      </Link>
-      <Link href={"/rdv"} className='transition-colors hover:bg-main-green hover:text-white'>
-        Mes Rendez-vous
-      </Link>
-      <Link href={"/drive"} className='transition-colors hover:bg-main-green hover:text-white'>
-        Drive
-      </Link>
-
-      <SignInButton/>
-    </header>
+    <SignInButton />
   )
 }
-
-export default AppBar

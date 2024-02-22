@@ -14,18 +14,19 @@ const config = {
       center: true,
       padding: "2rem",
       screens: {
+        sm: '480px',
+        md: '768px',
+        lg: '976px',
         "2xl": "1400px",
       },
     },
-    colors: {
-      'light-green': "#F4F9F4",
-      'light-green2': "#A7D7C5",
-      'cgreen': "#74B49B",
-      'dark-green': "#5C8D89",
-      'dark': "#0D0D0D",
-    },
     extend: {
       colors: {
+        "light-green": "#F4F9F4",
+        "light-green2": "#A7D7C5",
+        "main-green": "#74B49B",
+        "dark-green": "#5C8D89",
+        "main-dark": "#0D0D0D",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

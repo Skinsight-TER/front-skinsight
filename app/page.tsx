@@ -4,9 +4,9 @@ import AppBar from "@/components/AppBar";
 
 export default function Home() {
   return (
-    <div>
+    <div className="flex gap-4 w-full h">
       <AppBar />
-      Feur
+      test
     </div>
   )
 }
