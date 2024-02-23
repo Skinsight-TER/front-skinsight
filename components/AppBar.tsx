@@ -25,7 +25,7 @@ export default function AppBar() {
           <AccordionItem value='preconsultation'>
             <AccordionTrigger>Préconsultation</AccordionTrigger>
             <AccordionContent>
-              <Link href={"/preconsultation-form"}>Formulaire de préconsultation</Link>
+              <Link href={"/dashboard/preconsultation/form"}>Formulaire de préconsultation</Link>
             </AccordionContent>
             <AccordionContent>
               <Link href={"/preconsultation-in-progress"}>Préconsultation en cours</Link>
@@ -43,10 +43,10 @@ export default function AppBar() {
           <AccordionItem value='drive'>
             <AccordionTrigger>Drive</AccordionTrigger>
             <AccordionContent>
-              <Link href={"/drive-import"}>importez vos images</Link>
+              <Link href={"/dashboard/drive"}>importez vos images</Link>
             </AccordionContent>
             <AccordionContent>
-              <Link href={"/dashboard/drive"}>Vos images</Link>
+              <Link href={"/dashboard/drive-storage"}>Vos images</Link>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
