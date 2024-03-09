@@ -8,10 +8,10 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({ label }) => {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className="flex items-center justify-center space-x-4">
+    <div className="flex flex-col items-start justify-center gap-2">
       <span>{label}</span>
       <button
-        className={`relative w-24 p-1 flex items-center rounded-lg bg-white`}
+        className={`relative w-30 p-2 flex items-center rounded-lg bg-white`}
         onClick={() => setIsActive(!isActive)}
       >
         {/* La sélection qui se déplace */}
@@ -21,9 +21,9 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({ label }) => {
           }`}
         ></div>
         {/* Les labels OUI et NON */}
-        <div className="flex justify-between w-full px-1">
-          <span className={`font-bold ${isActive ? 'text-main-dark' : 'text-gray-500'}`}>OUI</span>
-          <span className={`font-bold ${!isActive ? 'text-main-dark' : 'text-gray-500'}`}>NON</span>
+        <div className="flex items-center justify-between w-full px-1 gap-4">
+          <span className={`font-bold ${isActive ? 'text-main-dark' : 'text-main-dark bg-gray-400 px-2 py-1 rounded-lg'}`}>OUI</span>
+          <span className={`font-bold ${!isActive ? 'text-main-dark' : 'text-main-dark bg-gray-400 px-2 py-1 rounded-lg'}`}>NON</span>
         </div>
       </button>
     </div>
