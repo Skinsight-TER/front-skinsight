@@ -9,7 +9,7 @@ const SwitchButton: React.FC<SwitchButtonProps> = ({ label }) => {
 
   return (
     <div className="flex flex-col items-start justify-center gap-2">
-      <span>{label}</span>
+      <span className="text-base">{label}</span>
       <button
         className={`relative w-30 p-2 flex items-center rounded-lg bg-white`}
         onClick={() => setIsActive(!isActive)}

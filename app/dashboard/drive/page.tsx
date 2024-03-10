@@ -1,7 +1,7 @@
 'use client';
 
 import cloudinary from '@/lib/cloudinaryConfig';
-import {CldUploadWidget} from 'next-cloudinary';
+import {CldUploadWidget, CldImage} from 'next-cloudinary';
 import { useState } from 'react';
 
 async function uploadImageToCloudinary(file: string | Blob) {
@@ -35,10 +35,21 @@ async function uploadImageToCloudinary(file: string | Blob) {
 
 export default function Drive() {
   const [selectImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     setSelectedImage(file);
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      }
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewUrl(null);
+    }
   };
   
   const handleUpload = () => {
@@ -49,7 +60,10 @@ export default function Drive() {
 
   return(
     <div className='flex flex-col justify-center items-center w-full'>
-      <div className='text-2xl'>Upload your Image</div>
+      <div className='text-2xl'>Ajoutez votre image ici</div>
+      {previewUrl && (
+        <img src={previewUrl} alt='PReview' width={350} height={150}/>
+      )}
       <input type='file' onChange={handleImageChange}/>
       <button onClick={handleUpload}>Upload to Cloudinary</button>
     </div>
