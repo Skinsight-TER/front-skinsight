@@ -7,77 +7,168 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import Drive from "../../drive/page";
+import { Button } from "@/components/ui/button";
 
 export default function PreconsultationForm() {
 
   const [isSelected, setIsSelected] = useState(false);
+  const [location, setLocation] = useState('');
+  const [since, setSince] = useState('');
+  const [otherSymptoms, setOtherSymptoms] = useState(false);
+  const [otherSymptomsDetails, setOtherSymptomsDetails] = useState('');
+  const [pain, setPain] = useState(false);
+  const [painScale, setPainScale] = useState(5);
+  const [antecedent, setAntecedent] = useState(false);
+  const [currentTreatment, setCurrentTreatment] = useState(false);
+  const [treatmentDetails, setTreatmentDetails] = useState('');
+  const [change, setChange] = useState(false);
+  const [otherInfos, setOtherInfos] = useState('');
 
-  const handleSwitchChange = () => {
-    setIsSelected(!isSelected)
+
+
+  const handleInputChange = (event: { target: { value: any; }; }, setState: (arg0: any) => void) => {
+    setState(event.target.value);
+  };
+
+  const handleSwitchChange = (value: boolean, setValue: { (value: SetStateAction<boolean>): void; (arg0: boolean): void; }) => {
+    setValue(!value)
   }
 
+  const handlePainScaleChange = (value: number) => {
+    setPainScale(value);
+  };
+
+  const handleSubmit = () => {
+    const formData = {
+      pain: pain.toString(),
+      change: change.toString(),
+      bodypart: location, // Suppose location refers to the body part
+      messageIA: "",
+      painScale: painScale,
+      antecedent: antecedent.toString(),
+      otherInfos: otherInfos,
+      patientAge: "27", // Static for this example, replace with state if dynamic
+      otherSymptoms: otherSymptoms.toString(),
+      patientGender: "male", // Static for this example, replace with state if dynamic
+      currentTreatment: currentTreatment.toString(),
+      firstSymptomsAppearance: since,
+      descriptionOtherSymptoms: otherSymptomsDetails,
+      currentTreatmentDescription: treatmentDetails
+    };
+
+    const jsonFormData = JSON.stringify(formData);
+    console.log(jsonFormData);
+    // Handle the JSON data, e.g., send to an API
+  };
 
   return(
     <div className="bg-light-green w-full">
       <div className="text-2xl my-5">Préconsultation #1</div>
-      <div className="flex justify-around">
-        <div className="flex flex-col gap-4">
-          <div>  
-            <Label htmlFor="lieu" className="text-base">Lieu d'apparition</Label>
-            <Input
-              name="lieu"
-              required
-              className="rounded-xl text-main-dark"
-            />
+      <div>
+
+        <div className="flex justify-around">
+          <div className="flex flex-col gap-4">
+            <div>  
+              <Label htmlFor="lieu" className="text-base">Sur quelle partie du corp est-ce ?</Label>
+              <Input
+                id="location"
+                name="location"
+                required
+                value={location}
+                onChange={event => handleInputChange(event, setLocation)}
+                className="rounded-xl text-main-dark"
+              />
+            </div>
+            <div>  
+              <Label htmlFor="since" className="text-base">Depuis combien de temps est-il apparu ?</Label>
+              <Input
+                id="since"
+                name="since"
+                required
+                value={since}
+                onChange={event => handleInputChange(event, setSince)}
+                className="rounded-xl text-main-dark"
+              />
+            </div>
+            <div className="flex items-start">  
+              <SwitchButton
+                checked={otherSymptoms}
+                onChange={() => handleSwitchChange(otherSymptoms, setOtherSymptoms)}
+                label="Avez vous d'autres symptomes depuis son apprition ?"
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <Label htmlFor="other-sympt" className="text-base">Si oui lesquels ?</Label>
+              <Textarea 
+                id="desc-otherSymptome"
+                name="desc-otherSymptome"
+                value={otherSymptomsDetails}
+                onChange={event => handleInputChange(event, setOtherSymptomsDetails)}
+              />
+            </div>
+            <div className="flex items-start">  
+              <SwitchButton
+                checked={pain}
+                onChange={() => handleSwitchChange(pain, setPain)}
+                label="Avez vous des douleurs à cet endroit ?"
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <Label htmlFor="scale" className="text-base">Sur quel échelle est la douleur ?</Label>
+              <DrawerComponent onPainScaleChange={handlePainScaleChange} currentScale={painScale} />
+            </div>
           </div>
-          <div>  
-            <Label htmlFor="lieu" className="text-base">Depuis combien de temps est-il apparu ?</Label>
-            <Input
-              name="how-long"
-              required
-              className="rounded-xl text-main-dark"
-            />
-          </div>
-          <div className="flex items-start">  
-            <SwitchButton label="Avez vous d'autres symptomes depuis son apprition ?"/>
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <Label htmlFor="other-sympt" className="text-base">Si oui lesquels ?</Label>
-            <Textarea />
-          </div>
-          <div className="flex items-start">  
-            <SwitchButton label="Avez vous des douleurs à cet endroit ?"/>
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <Label htmlFor="scale" className="text-base">Sur quel échelle est la douleur ?</Label>
-            <DrawerComponent />
+          <Separator orientation="vertical" className="bg-gray-600"/>
+          <div>
+            <div>
+              <SwitchButton
+                checked={antecedent}
+                onChange={() => handleSwitchChange(antecedent, setAntecedent)}
+                label="Avez-vous des antécédents de cancer dans votre famille ?" 
+              />
+            </div>
+            <div>
+              <SwitchButton
+                checked={currentTreatment}
+                onChange={() => handleSwitchChange(currentTreatment, setCurrentTreatment)}
+                label="Suivez-vous un traitement actuellement ?" 
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <Label htmlFor="other-sympt" className="text-base">Lesquels ? (precisez la fréquence de votre prise de médicament)</Label>
+              <Textarea 
+                id="treatment-details"
+                name="treatment-detail"
+                value={treatmentDetails}
+                onChange={event => handleInputChange(event, setTreatmentDetails)}
+              />
+            </div>
+            <div>
+              <SwitchButton
+                checked={change}
+                onChange={() => handleSwitchChange(change, setChange)}
+                label="Avez-vous constaté un changement (taille, couleur, ...) depuis son apparition ?" 
+              />
+            </div>
+            <div className="flex flex-col items-start gap-2">
+              <Label htmlFor="other-sympt" className="text-base">Avez-vous d'autres remarques à remonter ?</Label>
+              <Textarea 
+                id="other-infos"
+                name="other-infos"
+                value={otherInfos}
+                onChange={event => handleInputChange(event, setOtherInfos)}
+              />
+            </div>
           </div>
         </div>
-        <Separator orientation="vertical" className="bg-gray-600"/>
-        <div>
-          <div>
-            <SwitchButton label="Avez-vous des antécédents de cancer dans votre famille ?" />
-          </div>
-          <div>
-            <SwitchButton label="Suivez-vous un traitement actuellement ?" />
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <Label htmlFor="other-sympt" className="text-base">Lesquels ? (precisez la fréquence de votre prise de médicament)</Label>
-            <Textarea />
-          </div>
-          <div>
-            <SwitchButton label="Avez-vous constaté un changement (taille, couleur, ...) depuis son apparition ?" />
-          </div>
-          <div className="flex flex-col items-start gap-2">
-            <Label htmlFor="other-sympt" className="text-base">Avez-vous d'autres remarques à remonter ?</Label>
-            <Textarea />
-          </div>
+        <div className="my-4">
+          <Drive />
         </div>
       </div>
-      <div>
-        <Drive />
+      <div className="flex justify-center">
+        <Button onClick={handleSubmit} className="rounded-xl bg-main-green text-2xl">Valider ma préconsultation</Button>
       </div>
     </div>
   )

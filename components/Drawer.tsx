@@ -47,11 +47,18 @@ const data = [
   },
 ]
 
-export function DrawerComponent() {
-  const [goal, setGoal] = React.useState(5)
+interface DrawerComponentProps {
+  onPainScaleChange: (value: number) => void;
+  currentScale: number;
+}
+
+export function DrawerComponent({ onPainScaleChange, currentScale }: DrawerComponentProps) {
+  const [goal, setGoal] = React.useState(currentScale)
 
   function onClick(adjustment: number) {
-    setGoal(Math.max(1, Math.min(10, goal + adjustment)))
+    const newGoal = Math.max(1, Math.min(10, goal + adjustment)) 
+    setGoal(newGoal)
+    onPainScaleChange(newGoal);
   }
 
   return (
