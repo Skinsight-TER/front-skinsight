@@ -25,7 +25,7 @@ export default function PreconsultationForm() {
   const [treatmentDetails, setTreatmentDetails] = useState('');
   const [change, setChange] = useState(false);
   const [otherInfos, setOtherInfos] = useState('');
-
+  const [imageUrl, setImageUrl] = useState('');
 
 
   const handleInputChange = (event: { target: { value: any; }; }, setState: (arg0: any) => void) => {
@@ -38,6 +38,10 @@ export default function PreconsultationForm() {
 
   const handlePainScaleChange = (value: number) => {
     setPainScale(value);
+  };
+
+  const handleImageUpload = (url: string) => {
+    setImageUrl(url);
   };
 
   const handleSubmit = () => {
@@ -55,7 +59,8 @@ export default function PreconsultationForm() {
       currentTreatment: currentTreatment.toString(),
       firstSymptomsAppearance: since,
       descriptionOtherSymptoms: otherSymptomsDetails,
-      currentTreatmentDescription: treatmentDetails
+      currentTreatmentDescription: treatmentDetails,
+      imageUrl: imageUrl
     };
 
     const jsonFormData = JSON.stringify(formData);
@@ -164,7 +169,7 @@ export default function PreconsultationForm() {
           </div>
         </div>
         <div className="my-4">
-          <Drive />
+          <Drive onImageUpload={handleImageUpload} />
         </div>
       </div>
       <div className="flex justify-center">

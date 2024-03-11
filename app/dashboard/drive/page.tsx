@@ -4,18 +4,47 @@ import cloudinary from '@/lib/cloudinaryConfig';
 import {CldUploadWidget, CldImage} from 'next-cloudinary';
 import { useState } from 'react';
 
-async function uploadImageToCloudinary(file: string | Blob) {
+// async function uploadImageToCloudinary(file: string | Blob): Promise<string> {
+//   const formData = new FormData();
+//   formData.append('file', file);
+//   formData.append('upload_preset', 'skinsight_upload');
+
+//   try {
+//     // Assurez-vous que la variable d'environnement est lue correctement
+//     const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+//     if (!cloudinaryUrl) {
+//       throw new Error("Cloudinary URL is not defined in environment variables.");
+//     }
+
+//     const response = await fetch(cloudinaryUrl, {
+//       method: 'POST',
+//       body: formData,
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Failed to upload image: ${response.statusText}`);
+//     }
+
+//     const data = await response.json();
+//     console.log('Uploaded Image URL:', data.secure_url);
+//     return data.secure_url;
+//     // Ici, vous pouvez définir l'URL de l'image dans l'état pour l'afficher ou le stocker
+//   } catch (error) {
+//     console.error('Upload error:', error);
+//   }
+// }
+
+async function uploadImageToCloudinary(file: string | Blob): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', 'skinsight_upload');
 
-  try {
-    // Assurez-vous que la variable d'environnement est lue correctement
-    const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-    if (!cloudinaryUrl) {
-      throw new Error("Cloudinary URL is not defined in environment variables.");
-    }
+  const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+  if (!cloudinaryUrl) {
+    throw new Error("Cloudinary URL is not defined in environment variables.");
+  }
 
+  try {
     const response = await fetch(cloudinaryUrl, {
       method: 'POST',
       body: formData,
@@ -26,14 +55,14 @@ async function uploadImageToCloudinary(file: string | Blob) {
     }
 
     const data = await response.json();
-    console.log('Uploaded Image URL:', data.secure_url);
-    // Ici, vous pouvez définir l'URL de l'image dans l'état pour l'afficher ou le stocker
+    return data.secure_url; // Retourne l'URL de l'image si l'upload réussit
   } catch (error) {
     console.error('Upload error:', error);
+    throw error; // Lance l'erreur pour que la fonction retourne toujours une Promise
   }
 }
 
-export default function Drive() {
+export default function Drive({ onImageUpload }: { onImageUpload: (url: string) => void }) {
   const [selectImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -52,9 +81,13 @@ export default function Drive() {
     }
   };
   
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (selectImage) {
-      uploadImageToCloudinary(selectImage);
+      const imageUrl = await uploadImageToCloudinary(selectImage);
+      console.log('Uploaded Image Url', imageUrl);
+      if (imageUrl) {
+        onImageUpload(imageUrl);
+      }
     }
   }
 
