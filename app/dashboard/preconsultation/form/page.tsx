@@ -30,8 +30,15 @@ interface FormData {
   imageUrl: string;
 }
 
+interface Status {
+
+}
+
 export default function PreconsultationForm() {
 
+  const { data: session } = useSession()
+
+  const [submitionStatus, setSubmitionStatus] = useState('COMMING')
   const [isSelected, setIsSelected] = useState(false);
   const [location, setLocation] = useState('');
   const [since, setSince] = useState('');
@@ -78,16 +85,15 @@ export default function PreconsultationForm() {
       firstSymptomsAppearance: since,
       descriptionOtherSymptoms: otherSymptomsDetails,
       currentTreatmentDescription: treatmentDetails,
-      imageUrl: imageUrl
+      imageUrl: imageUrl,
     };
 
     await submitForm(formData);
   };
 
-  const { data: session } = useSession();
-
   const submitForm = async (formData: FormData) => {
     try {
+      const patientId = session?.user?.id
       const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/preconsultation", {
         method: "POST",
         headers: {
@@ -95,17 +101,23 @@ export default function PreconsultationForm() {
           "Authorization": `Bearer ${session?.accessToken}`
         },
         body: JSON.stringify({
-          infoPatient: formData
+          status: submitionStatus,
+          description: "une description",
+          patientId: "1ed834fc-88bc-40ac-af3e-045c51359869",
+          infoPatient: formData,
         })
       });
 
       if (res.ok) {
+        setSubmitionStatus('approuved');
         console.log("Formulaire soumis avec succes");
       } else {
+        setSubmitionStatus('denied');
         console.error("Erreur lors de la soumission du formulaire");
       }
     } catch (error) {
       console.error("Erreur de réseau ou de communication", error)
+      setSubmitionStatus('denied');
     }
   }
 
