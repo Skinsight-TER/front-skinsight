@@ -1,6 +1,12 @@
 import { NextAuthOptions } from "next-auth";
+import { jwtDecode } from "jwt-decode";
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials"
+
+interface NextSessionUser {
+  id: string;
+  name: string;
+}
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -13,14 +19,15 @@ export const authOptions: NextAuthOptions = {
         email: {
           label: "Email",
           type: "text",
-          placeholder: "Jhon Doe",
+          placeholder: "Enter your email...",
         },
-        password: { label: "Mot de passe", type: "password" }
+        password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req){
+      async authorize(credentials){
         if (!credentials?.email || !credentials?.password) return null;
         const { email, password } = credentials;
         const res = await fetch (process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
+        // const res = await fetch ("http://localhost:3002/auth/login", {
           method: "POST",
           body: JSON.stringify({
             email,
@@ -30,32 +37,37 @@ export const authOptions: NextAuthOptions = {
             "Content-Type": "application/json",
           }
         });
-        if (res.status == 401){
-          console.log(res.statusText);
-
+        if (!res.ok) {
+          console.log('Error while login', await res.text());
           return null;
-        }
-        const user = await res.json()
-        console.log("User", user);
-        return { ...user, accessToken: user.accessToken };
+        } 
+        if (res.status == 401) return null;
+        const tokens = (await res.json()) as {
+          accessToken: string;
+        };
+        const userDecoded = jwtDecode<{
+          id: string;
+          email: string;
+          iat: number;
+          exp: number;
+        }>(tokens.accessToken);
+        const user: NextSessionUser = {
+          id: userDecoded.id as never,
+          name: userDecoded.email,
+        };
+        return user
       },
     })
   ], 
   callbacks: {
-    async jwt({ token, user }) {
-      console.log("User in JWT", user);
-      if (user?.accessToken) {
-        token.accessToken = user.accessToken; // Pass the accessToken from the user object to the JWT token
+    session: ({ session, token, user}) => {
+      console.log("callback.session", {session, token, user});
+      return {
+        ...session,
+        user: {
+          ...session.user,
+        }
       }
-      console.log("Token",token.accessToken);
-      return token;
-    },
-    async session({ session, token }) {
-      console.log("Token in session", token);
-      session.accessToken = token.accessToken;
-      console.log("Session",session.accessToken);
-      
-      return session;
     }
   }
 }

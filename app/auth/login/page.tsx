@@ -27,33 +27,10 @@ const SigninPage = () => {
     )
 
     if (result?.error) {
-      console.log('error');
+      console.log('error', result.error);
     } else {
       router.push("/dashboard");
     }
-    // try{
-    //   const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
-    //     method: "POST",
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       email: data.current.email,
-    //       password: data.current.password
-    //     }),
-    //     credentials: 'include',
-    //   });
-    //   console.log(res)
-    //   if (!res.ok) {
-    //     return;
-    //   } else {
-    //     router.push("/dashboard");
-    //   }
-    //   const response = await res.json();
-    //   console.log(response);
-    // } catch(error) {
-    //   console.log("Fetch error:", error)
-    // }
   };
   const data = useRef<FormInputs>({
     email: "",

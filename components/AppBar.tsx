@@ -28,7 +28,7 @@ export default function AppBar() {
               <Link href={"/dashboard/preconsultation/form"}>Formulaire de préconsultation</Link>
             </AccordionContent>
             <AccordionContent>
-              <Link href={"/preconsultation-in-progress"}>Préconsultation en cours</Link>
+              <Link href={"/dashboard/preconsultation/in-progress"}>Préconsultation en cours</Link>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value='rendez-vous'>
