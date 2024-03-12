@@ -37,12 +37,6 @@ const SignupPage = () => {
         gender: data.current.gender,
         age: data.current.age,
         password: data.current.password,
-        // email: "test@example.com",
-        // firstName: "John",
-        // lastName: "Doe",
-        // gender: "MALE",
-        // age: 30,
-        // password: "password123",
       }),
       credentials: 'include',
     });

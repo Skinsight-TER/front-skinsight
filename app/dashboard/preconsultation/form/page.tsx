@@ -10,6 +10,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { SetStateAction, useState } from "react";
 import Drive from "../../drive/page";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+
+interface FormData {
+  pain: boolean;
+  change: boolean;
+  bodypart: string;
+  messageIA: string;
+  painScale: number;
+  antecedent: boolean;
+  otherInfos: string;
+  patientAge: string;
+  otherSymptoms: boolean;
+  patientGender: string;
+  currentTreatment: boolean;
+  firstSymptomsAppearance: string;
+  descriptionOtherSymptoms: string;
+  currentTreatmentDescription: string;
+  imageUrl: string;
+}
 
 export default function PreconsultationForm() {
 
@@ -26,24 +45,6 @@ export default function PreconsultationForm() {
   const [change, setChange] = useState(false);
   const [otherInfos, setOtherInfos] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-
-  interface FormData {
-    pain: boolean;
-    change: boolean;
-    bodypart: string;
-    messageIA: string;
-    painScale: number;
-    antecedent: boolean;
-    otherInfos: string;
-    patientAge: string;
-    otherSymptoms: boolean;
-    patientGender: string;
-    currentTreatment: boolean;
-    firstSymptomsAppearance: string;
-    descriptionOtherSymptoms: string;
-    currentTreatmentDescription: string;
-    imageUrl: string;
-  }
 
   const handleInputChange = (event: { target: { value: any; }; }, setState: (arg0: any) => void) => {
     setState(event.target.value);
@@ -83,14 +84,19 @@ export default function PreconsultationForm() {
     await submitForm(formData);
   };
 
+  const { data: session } = useSession();
+
   const submitForm = async (formData: FormData) => {
     try {
-      const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "preconsultation", {
+      const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/preconsultation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${session?.accessToken}`
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          infoPatient: formData
+        })
       });
 
       if (res.ok) {

@@ -36,15 +36,25 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
         const user = await res.json()
-        return user;
+        console.log("User", user);
+        return { ...user, accessToken: user.accessToken };
       },
     })
   ], 
   callbacks: {
-    async session({ token, session }) {
-      if (session.user) {
-        session.user = token.user!;
+    async jwt({ token, user }) {
+      console.log("User in JWT", user);
+      if (user?.accessToken) {
+        token.accessToken = user.accessToken; // Pass the accessToken from the user object to the JWT token
       }
+      console.log("Token",token.accessToken);
+      return token;
+    },
+    async session({ session, token }) {
+      console.log("Token in session", token);
+      session.accessToken = token.accessToken;
+      console.log("Session",session.accessToken);
+      
       return session;
     }
   }
