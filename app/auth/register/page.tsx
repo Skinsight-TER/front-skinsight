@@ -37,6 +37,12 @@ const SignupPage = () => {
         gender: data.current.gender,
         age: data.current.age,
         password: data.current.password,
+        // email: "test@example.com",
+        // firstName: "John",
+        // lastName: "Doe",
+        // gender: "MALE",
+        // age: 30,
+        // password: "password123",
       }),
       credentials: 'include',
     });
@@ -79,7 +85,7 @@ const SignupPage = () => {
                   name="firstName"
                   required
                   onChange={(e) => (data.current.firstName = e.target.value)}
-                  className="rounded-xl text-dark"
+                  className="rounded-xl text-main-dark"
                 />
               </div>
               <div className="w-full">
@@ -88,7 +94,7 @@ const SignupPage = () => {
                   name="lastName"
                   required
                   onChange={(e) => (data.current.lastName = e.target.value)}
-                  className="rounded-xl text-dark"
+                  className="rounded-xl text-main-dark"
                 />
               </div>
             </div>
@@ -100,7 +106,7 @@ const SignupPage = () => {
                 placeholder="xyz@mail.com"
                 required
                 onChange={(e) => (data.current.email = e.target.value)}
-                className="rounded-xl text-dark"
+                className="rounded-xl text-main-dark"
                 />
             </div>
             <div className="py-2">
@@ -110,7 +116,7 @@ const SignupPage = () => {
                 id="password"
                 required
                 onChange={(e) => (data.current.password = e.target.value)}
-                className="rounded-xl text-dark"
+                className="rounded-xl text-main-dark"
               />
             </div>
             <div className="flex gap-2 py-2">
@@ -121,18 +127,18 @@ const SignupPage = () => {
                   type="number"
                   required
                   onChange={(e) => (data.current.age = Number(e.target.value))}
-                  className="rounded-xl text-dark"
+                  className="rounded-xl text-main-dark"
                 />
               </div>
               <div className="w-full">
                 <Label htmlFor="gender" className="flex items-start py-2">Genre :</Label>
                 <Select onValueChange={(value: Gender) => (data.current.gender = value)}>
-                  <SelectTrigger className="rounded-xl text-dark">
+                  <SelectTrigger className="rounded-xl text-main-dark">
                     <SelectValue placeholder="Quel est votre genre ?"/>
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value={Gender.MALE} className="text-dark">Male</SelectItem>
-                    <SelectItem value={Gender.FEMALE} className="text-dark">Female</SelectItem>
+                    <SelectItem value={Gender.MALE} className="text-main-dark">Male</SelectItem>
+                    <SelectItem value={Gender.FEMALE} className="text-main-dark">Female</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

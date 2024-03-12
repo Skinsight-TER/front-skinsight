@@ -27,6 +27,23 @@ export default function PreconsultationForm() {
   const [otherInfos, setOtherInfos] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
+  interface FormData {
+    pain: boolean;
+    change: boolean;
+    bodypart: string;
+    messageIA: string;
+    painScale: number;
+    antecedent: boolean;
+    otherInfos: string;
+    patientAge: string;
+    otherSymptoms: boolean;
+    patientGender: string;
+    currentTreatment: boolean;
+    firstSymptomsAppearance: string;
+    descriptionOtherSymptoms: string;
+    currentTreatmentDescription: string;
+    imageUrl: string;
+  }
 
   const handleInputChange = (event: { target: { value: any; }; }, setState: (arg0: any) => void) => {
     setState(event.target.value);
@@ -44,29 +61,47 @@ export default function PreconsultationForm() {
     setImageUrl(url);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const formData = {
-      pain: pain.toString(),
-      change: change.toString(),
+      pain: pain,
+      change: change,
       bodypart: location, // Suppose location refers to the body part
       messageIA: "",
       painScale: painScale,
-      antecedent: antecedent.toString(),
+      antecedent: antecedent,
       otherInfos: otherInfos,
       patientAge: "27", // Static for this example, replace with state if dynamic
-      otherSymptoms: otherSymptoms.toString(),
+      otherSymptoms: otherSymptoms,
       patientGender: "male", // Static for this example, replace with state if dynamic
-      currentTreatment: currentTreatment.toString(),
+      currentTreatment: currentTreatment,
       firstSymptomsAppearance: since,
       descriptionOtherSymptoms: otherSymptomsDetails,
       currentTreatmentDescription: treatmentDetails,
       imageUrl: imageUrl
     };
 
-    const jsonFormData = JSON.stringify(formData);
-    console.log(jsonFormData);
-    // Handle the JSON data, e.g., send to an API
+    await submitForm(formData);
   };
+
+  const submitForm = async (formData: FormData) => {
+    try {
+      const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "preconsultation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
+        console.log("Formulaire soumis avec succes");
+      } else {
+        console.error("Erreur lors de la soumission du formulaire");
+      }
+    } catch (error) {
+      console.error("Erreur de réseau ou de communication", error)
+    }
+  }
 
   return(
     <div className="bg-light-green w-full">
