@@ -14,15 +14,13 @@ export default function AppBar() {
   if (session) {
     return (
       <div className='flex flex-col bg-dark-green w-[20%] h-screen gap-5 px-6'>
-        <Avatar>
+        <Avatar className='my-5'>
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <Link href={"/home"} className=''>
-          Accueil
-        </Link>
+        <Link href={"/dashboard"} className='text-lg mb-[-18px] hover:underline-offset-2'>Accueil</Link>
         <Accordion type='single' collapsible>
-          <AccordionItem value='preconsultation'>
+          <AccordionItem value='preconsultation' className='text-lg border-none'>
             <AccordionTrigger>Préconsultation</AccordionTrigger>
             <AccordionContent>
               <Link href={"/dashboard/preconsultation/form"}>Formulaire de préconsultation</Link>
@@ -31,22 +29,14 @@ export default function AppBar() {
               <Link href={"/dashboard/preconsultation/in-progress"}>Préconsultation en cours</Link>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value='rendez-vous'>
-            <AccordionTrigger>Rendez-vous</AccordionTrigger>
-            <AccordionContent>
-              <Link href={"/rdv-available"}>Formulaire de préconsultation</Link>
-            </AccordionContent>
-            <AccordionContent>
-              <Link href={"/rdv-in-progress"}>Préconsultation en cours</Link>
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value='drive'>
+          <Link href={"/dashboard/rdv/in-progress"} className='text-lg mt-[18px]'>Mes Rendez-vous</Link>
+          <AccordionItem value='drive' className='text-lg border-none'>
             <AccordionTrigger>Drive</AccordionTrigger>
             <AccordionContent>
-              <Link href={"/dashboard/drive"}>importez vos images</Link>
+              <Link href={"/dashboard/drive/import"}>importez vos images</Link>
             </AccordionContent>
             <AccordionContent>
-              <Link href={"/dashboard/drive-storage"}>Vos images</Link>
+              <Link href={"/dashboard/drive/storage"}>Vos images</Link>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

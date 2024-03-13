@@ -15,19 +15,19 @@ const SignInButton = () => {
   // Si l'utilisateur est authentifié, afficher les informations de l'utilisateur et le bouton de déconnexion
   if (status === "authenticated") {
     return (
-      <div className="flex">
-        <button onClick={() => signOut()} className="text-red-600">Sign Out</button>
+      <div className="flex justify-center bg-red-400 mx-4 my-2 rounded-lg">
+        <button onClick={() => signOut()} className="text-white">Sign Out</button>
       </div>
     );
   }
 
   // Si l'utilisateur n'est pas authentifié, afficher les liens de connexion et d'inscription
   return (
-    <div className="flex">
-      <Link href={"/auth/login"} className="text-green-600">
-        Login
+    <div className="flex gap-6 my-5">
+      <Link href={"/auth/login"} className="bg-light-green2 px-4 py-2 rounded-lg text-green-800">
+        Connectez-vous
       </Link>
-      <Link href={"/auth/register"} className="bg-green-600 text-green-200 p-2 rounded">
+      <Link href={"/auth/register"} className="bg-main-green text-green-50 px-4 py-2 rounded">
         Register
       </Link>
     </div>

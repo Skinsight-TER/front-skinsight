@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { SetStateAction, useState } from "react";
-import Drive from "../../drive/page";
+import Drive from "../../drive/import/page";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 

@@ -4,36 +4,6 @@ import cloudinary from '@/lib/cloudinaryConfig';
 import {CldUploadWidget, CldImage} from 'next-cloudinary';
 import { useState } from 'react';
 
-// async function uploadImageToCloudinary(file: string | Blob): Promise<string> {
-//   const formData = new FormData();
-//   formData.append('file', file);
-//   formData.append('upload_preset', 'skinsight_upload');
-
-//   try {
-//     // Assurez-vous que la variable d'environnement est lue correctement
-//     const cloudinaryUrl = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
-//     if (!cloudinaryUrl) {
-//       throw new Error("Cloudinary URL is not defined in environment variables.");
-//     }
-
-//     const response = await fetch(cloudinaryUrl, {
-//       method: 'POST',
-//       body: formData,
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`Failed to upload image: ${response.statusText}`);
-//     }
-
-//     const data = await response.json();
-//     console.log('Uploaded Image URL:', data.secure_url);
-//     return data.secure_url;
-//     // Ici, vous pouvez définir l'URL de l'image dans l'état pour l'afficher ou le stocker
-//   } catch (error) {
-//     console.error('Upload error:', error);
-//   }
-// }
-
 async function uploadImageToCloudinary(file: string | Blob): Promise<string> {
   const formData = new FormData();
   formData.append('file', file);
@@ -95,10 +65,10 @@ export default function Drive({ onImageUpload }: { onImageUpload: (url: string) 
     <div className='flex flex-col justify-center items-center w-full'>
       <div className='text-2xl'>Ajoutez votre image ici</div>
       {previewUrl && (
-        <img src={previewUrl} alt='PReview' width={350} height={150}/>
+        <img src={previewUrl} alt='PReview' width={350} height={150} className='rounded-xl my-5'/>
       )}
       <input type='file' onChange={handleImageChange}/>
-      <button onClick={handleUpload}>Upload to Cloudinary</button>
+      <button onClick={handleUpload} className='bg-main-green px-2 py-2 my-2 rounded-lg'>Importez votre image</button>
     </div>
   )
 }
