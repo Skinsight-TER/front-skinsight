@@ -104,11 +104,12 @@ export default function PreconsultationForm() {
         body: JSON.stringify({
           status: submitionStatus,
           description: "une description",
-          patientId: "4d168673-7b7b-49d8-ac2d-be7caa7cab29",
+          patientId: "ce69d9f7-2f35-4a82-b535-965411debf1d",
           infoPatient: formData,
         })
+        
       });
-
+      console.log(res);
       if (res.ok) {
         setSubmitionStatus('approuved');
         console.log("Formulaire soumis avec succes");

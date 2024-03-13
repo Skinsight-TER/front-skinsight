@@ -1,12 +1,27 @@
+'use client';
+
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { useState } from "react";
+
+function getCurrentDateFormatted() {
+    const now = new Date();
+    const year = now.getFullYear();
+    // getMonth() retourne un mois de 0 (janvier) à 11 (décembre), donc ajoutez 1 pour obtenir le format correct
+    // PadStart(2, '0') assure que le mois et le jour sont toujours au format à deux chiffres
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+
+    // Assemble la date dans le format YYYY-MM-DD
+    return `${year}-${month}-${day}`;
+}
 
 export default function PreconsultationInProgress() {
 
   const dataPreconsultation = [
     {
         nom: 'Consultation 1',
-        date: '2023-03-13',
+        date: '2024-03-17',
         medecinGeneraliste: 'Dr. Léa Moreau',
         dermatologue: 'Dr. Émile Durand',
         document: 'Rapport_visite_2023-03-01.pdf',
@@ -14,7 +29,7 @@ export default function PreconsultationInProgress() {
     },
     {
         nom: 'Consultation 2',
-        date: '2023-03-14',
+        date: '2024-03-18',
         medecinGeneraliste: 'Dr. Hugo Bernard',
         dermatologue: 'Dr. Alice Mercier',
         document: 'Rapport_visite_2023-03-02.pdf',
@@ -22,100 +37,85 @@ export default function PreconsultationInProgress() {
     },
     {
         nom: 'Consultation 3',
-        date: '2023-03-03',
+        date: '2024-03-19',
         medecinGeneraliste: 'Dr. Jules Lemoine',
         dermatologue: 'Dr. Clara Dupuis',
         document: 'Rapport_visite_2023-03-03.pdf',
-        status: 'Rejeté'
+        status: 'En attente'
     },
     {
-      nom: 'Consultation 4',
-      date: '2023-03-03',
-      medecinGeneraliste: 'Dr. Jules Lemoine',
-      dermatologue: 'Dr. Clara Dupuis',
-      document: 'Rapport_visite_2023-03-03.pdf',
-      status: 'Rejeté'
-  },
-  {
-    nom: 'Consultation 5',
-    date: '2023-03-03',
+    nom: 'Consultation 4',
+    date: '2024-03-03',
     medecinGeneraliste: 'Dr. Jules Lemoine',
     dermatologue: 'Dr. Clara Dupuis',
     document: 'Rapport_visite_2023-03-03.pdf',
     status: 'Rejeté'
-  },
+    },
+    {
+    nom: 'Consultation 5',
+    date: '2024-03-03',
+    medecinGeneraliste: 'Dr. Jules Lemoine',
+    dermatologue: 'Dr. Clara Dupuis',
+    document: 'Rapport_visite_2023-03-03.pdf',
+    status: 'Rejeté'
+    },
     // Ajoutez d'autres éléments selon vos besoins
 ];
 
+const [showPassed, setShowPassed] = useState(false);
+const currentDate = getCurrentDateFormatted();
+const dateToString = currentDate.toString();
+
+// const hasPassedPreconsultations = dataPreconsultation.some(item => new Date(item.date) < new Date(currentDate));
+
+// const containerStyle = hasPassedPreconsultations && showPassed ? "bg-light-green2" : "bg-main-green";
+
+const displayedPreconsultations = dataPreconsultation.filter(item => {
+    const itemDate = new Date(item.date);
+    return showPassed || itemDate >= new Date(currentDate);
+});
+
+const isPassed = (date: string | Date) => {
+    return new Date(date) < new Date(currentDate);
+};
+
 return (
-  <div>
+    <div className="w-full">
     <div className="text-2xl mt-10 ml-5">Préconsultation</div>
     <div className="flex justify-start items-center gap-2 my-10 mx-5">
-        <Label htmlFor="show-passed">Affciher les préconsultation passés</Label>
-        <Switch id="show-passed"/>
+        <Label htmlFor="show-passed">Afficher les préconsultations passées</Label>
+        <Switch id="show-passed" checked={showPassed} onCheckedChange={() => setShowPassed(!showPassed)}/>
     </div>
     <div className="flex flex-col items-center justify-center w-full">
-        <div className="bg-dark-green w-[70vw] my-5 mx-5 rounded-xl">
-            <div className="flex justify-between my-5 mx-6">
+        <div className="bg-dark-green w-[70vw] mt-5 mx-5 rounded-t-xl">
+            <div className="grid grid-cols-6 gap-4 my-5 mx-6 text-center">
                 <div>Nom</div>
                 <div>Date</div>
                 <div>Médecin Généraliste</div>
-                <div>Dermathologie</div>
+                <div>Dermatologie</div>
                 <div>Documents</div>
                 <div>Status</div>
             </div>
-            {dataPreconsultation.map((item, index) => (
-                <div key={index} className="flex justify-between">
+        </div>
+        <div className="bg-light-green2 w-[70vw] rounded-b-xl">
+        {displayedPreconsultations.map((item, index) => {
+            if (!showPassed) {
+                item.status == "Passé";
+            }
+            return (
+                <div key={index} className="grid grid-cols-6 gap-4 my-5 mx-6 text-center">
                     <div>{item.nom}</div>
                     <div>{item.date}</div>
                     <div>{item.medecinGeneraliste}</div>
                     <div>{item.dermatologue}</div>
                     <div>Photo</div>
-                    <div>{item.status}</div>
+                    <div>{isPassed(item.date) ? "Passé" : item.status}</div>
                 </div>
-            ))}
-        </div>  
+            )
+        })}
+        </div>
     </div>
-  </div>
+    </div>
 );
 
-
 }
-
-{/* <table className="min-w-full mx-10 my-2 rounded-lg">
-                <thead className="bg-dark-green text-white rounded-lg">
-                    <tr>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider rounded-tl-lg">Nom</th>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider">Médecin Généraliste</th>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider">Dermathologue</th>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider">Documents</th>
-                        <th className="px-6 py-3 text-center leading-4 tracking-wider rounded-tr-lg">Status</th>
-                    </tr>
-                </thead>
-                <tbody className="bg-gray-200">
-                    {dataPreconsultation.map((item, index) => (
-                        <tr key={index} className="bg-light-green2">
-                            <td className="px-6 py-4 whitespace-no-wrap">{item.nom}</td>
-                            <td className="px-6 py-4 whitespace-no-wrap">{item.date}</td>
-                            <td className="px-6 py-4 whitespace-no-wrap">{item.medecinGeneraliste}</td>
-                            <td className="px-6 py-4 whitespace-no-wrap">{item.dermatologue}</td>
-                            <td className="px-6 py-4 whitespace-no-wrap">
-                                <div className="flex items-center">
-                                    <div className="text-sm leading-5 text-gray-900">Photos</div>
-                                    <div className="ml-4">
-                                        <div className="text-sm leading-5 text-teal-500">
-                                            ✔️
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td className="px-6 py-4 whitespace-no-wrap">
-                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${item.status === 'Validé' ? 'bg-blue-100 text-green-800' : item.status === 'En attente' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
-                                    {item.status}
-                                </span>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table> */}
