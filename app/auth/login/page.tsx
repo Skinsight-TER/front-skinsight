@@ -5,7 +5,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import {default as Logo} from "@/public/logo.svg";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ type FormInputs = {
   email: string;
   password: string;
 }
+
 
 const SigninPage = () => {
   const router = useRouter();

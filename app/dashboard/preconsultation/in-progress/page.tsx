@@ -50,9 +50,39 @@ export default function PreconsultationInProgress() {
 return (
   <div>
     <div className="text-2xl mt-10 ml-5">Préconsultation</div>
-    <div className="flex items-center justify-center w-screen h-screen">
-        <div className="">
-            {/* <table className="min-w-full mx-10 my-2 rounded-lg">
+    <div className="flex justify-start items-center gap-2 my-10 mx-5">
+        <Label htmlFor="show-passed">Affciher les préconsultation passés</Label>
+        <Switch id="show-passed"/>
+    </div>
+    <div className="flex flex-col items-center justify-center w-full">
+        <div className="bg-dark-green w-[70vw] my-5 mx-5 rounded-xl">
+            <div className="flex justify-between my-5 mx-6">
+                <div>Nom</div>
+                <div>Date</div>
+                <div>Médecin Généraliste</div>
+                <div>Dermathologie</div>
+                <div>Documents</div>
+                <div>Status</div>
+            </div>
+            {dataPreconsultation.map((item, index) => (
+                <div key={index} className="flex justify-between">
+                    <div>{item.nom}</div>
+                    <div>{item.date}</div>
+                    <div>{item.medecinGeneraliste}</div>
+                    <div>{item.dermatologue}</div>
+                    <div>Photo</div>
+                    <div>{item.status}</div>
+                </div>
+            ))}
+        </div>  
+    </div>
+  </div>
+);
+
+
+}
+
+{/* <table className="min-w-full mx-10 my-2 rounded-lg">
                 <thead className="bg-dark-green text-white rounded-lg">
                     <tr>
                         <th className="px-6 py-3 text-center leading-4 tracking-wider rounded-tl-lg">Nom</th>
@@ -89,10 +119,3 @@ return (
                     ))}
                 </tbody>
             </table> */}
-        </div>  
-    </div>
-  </div>
-);
-
-
-}

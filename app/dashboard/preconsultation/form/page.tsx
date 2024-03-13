@@ -94,6 +94,7 @@ export default function PreconsultationForm() {
   const submitForm = async (formData: FormData) => {
     try {
       const patientId = session?.user?.id
+      console.log(patientId);
       const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/preconsultation", {
         method: "POST",
         headers: {
@@ -103,7 +104,7 @@ export default function PreconsultationForm() {
         body: JSON.stringify({
           status: submitionStatus,
           description: "une description",
-          patientId: "1ed834fc-88bc-40ac-af3e-045c51359869",
+          patientId: "4d168673-7b7b-49d8-ac2d-be7caa7cab29",
           infoPatient: formData,
         })
       });
